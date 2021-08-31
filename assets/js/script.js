@@ -109,6 +109,22 @@ var questions = [
 ];
 var wrong = 0;
 var correct = 0;
+var questionNumber = 0;
+
+var questionOrder = [];
+function makeQuestionOrder() {
+    for(let i = 0; i < questions.length; i++){
+        questionOrder.push(i);
+    }
+    console.log(questionOrder);
+    for (var i = questionOrder.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = questionOrder[i];
+        questionOrder[i] = questionOrder[j];
+        questionOrder[j] = temp;
+    }
+};
+makeQuestionOrder();
 
 startbutton.onclick = function(){
     mainPage.style.display = "none";
@@ -131,22 +147,22 @@ function timer(){
 };
 
 function getQuestion(){
-    var curentQuestion = questions[0].question;
+    var curentQuestion = questions[questionNumber].question;
     quizEl.textContent = curentQuestion;
     var answerA = document.createElement("button");
-    answerA.textContent = "A:" + questions[0].answers["a"];
+    answerA.textContent = "A:" + questions[questionNumber].answers["a"];
     answerA.setAttribute("data-letter", "a");
     quizEl.appendChild(answerA);
     var answerB = document.createElement("button");
-    answerB.textContent = "B:" + questions[0].answers["b"];
+    answerB.textContent = "B:" + questions[questionNumber].answers["b"];
     answerB.setAttribute("data-letter", "b");
     quizEl.appendChild(answerB);
     var answerC = document.createElement("button");
-    answerC.textContent = "C:" + questions[0].answers["c"];
+    answerC.textContent = "C:" + questions[questionNumber].answers["c"];
     answerC.setAttribute("data-letter", "c");
     quizEl.appendChild(answerC);
     var answerD = document.createElement("button");
-    answerD.textContent = "D:" + questions[0].answers["d"];
+    answerD.textContent = "D:" + questions[questionNumber].answers["d"];
     answerD.setAttribute("data-letter", "d");
     quizEl.appendChild(answerD);
 }
@@ -155,12 +171,13 @@ quizEl.addEventListener("click", function(event) {
     var element = event.target;
     if (element.matches("button") === true){
         var guess = element.getAttribute("data-letter");
-        if (guess === questions[0].correctAnswer){
+        if (guess === questions[questionNumber].correctAnswer){
             correct++;
         }else{
             wrong++;
             secondsLeft = secondsLeft - 5;
         }
+        questionNumber++;
         console.log(correct, wrong)
         getQuestion();
     }
