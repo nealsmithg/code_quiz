@@ -139,9 +139,9 @@ function timer(){
         
         
 
-        if(secondsLeft === 0){
+        if(secondsLeft <= 0){
             clearInterval(timerInterval);
-
+            endGame();
         };
     },1000);
 };
@@ -152,33 +152,60 @@ function getQuestion(){
     var answerA = document.createElement("button");
     answerA.textContent = "A:" + questions[questionNumber].answers["a"];
     answerA.setAttribute("data-letter", "a");
+    answerA.setAttribute("data-type", "question");
     quizEl.appendChild(answerA);
     var answerB = document.createElement("button");
     answerB.textContent = "B:" + questions[questionNumber].answers["b"];
     answerB.setAttribute("data-letter", "b");
+    answerB.setAttribute("data-type", "question");
     quizEl.appendChild(answerB);
     var answerC = document.createElement("button");
     answerC.textContent = "C:" + questions[questionNumber].answers["c"];
     answerC.setAttribute("data-letter", "c");
+    answerC.setAttribute("data-type", "question");
     quizEl.appendChild(answerC);
     var answerD = document.createElement("button");
     answerD.textContent = "D:" + questions[questionNumber].answers["d"];
     answerD.setAttribute("data-letter", "d");
+    answerd.setAttribute("data-type", "question");
     quizEl.appendChild(answerD);
 }
 
 quizEl.addEventListener("click", function(event) {
     var element = event.target;
     if (element.matches("button") === true){
+        var type = element.getAttribute("data-type");
         var guess = element.getAttribute("data-letter");
-        if (guess === questions[questionNumber].correctAnswer){
+        if( type === "question"){
+            if (guess === questions[questionNumber].correctAnswer){
             correct++;
-        }else{
+            }else{
             wrong++;
             secondsLeft = secondsLeft - 5;
-        }
-        questionNumber++;
-        console.log(correct, wrong)
-        getQuestion();
-    }
+            }
+            if (questionNumber > questionOrder.length){
+            clearInterval(timerInterval);
+            endGame();
+            }
+            questionNumber++;
+            console.log(correct, wrong)
+            getQuestion();
+        }else if(type === "submit"){
+            event.preventDefault();
+            var name = document.getElementById("name");
+            
+        };
+    };
 });
+
+function endGame(){
+    quizEl.textContent = "Your score is" + score +"/n Please enter your name to see the High Scores"
+    var name = document.createElement("input");
+    name.setAttribute("type","text")
+    name.setAttribute("id", "name")
+    quizEl.appendChild(name);
+    var submit = document.createElement("button")
+    submit.textContent = "submit";
+    submit.setAttribute("data-type", "submit");
+    quizEl.appendChild(submit);
+};
