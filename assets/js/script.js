@@ -1,7 +1,4 @@
-var highscores = [{
-    name: "placeholder",
-    score: 0
-}];
+var highscores = [];
 var startbutton = document.getElementById("start");
 
 var timeEl = document.getElementById("timer");
@@ -114,6 +111,7 @@ var wrong = 0;
 var correct = 0;
 var questionNumber = 0;
 var score = 0;
+var timerInterval
 
 var questionOrder = [];
 function makeQuestionOrder() {
@@ -137,20 +135,20 @@ startbutton.onclick = function(){
 };
 
 function timer(){
-    var timerInterval = setInterval(function(){
+    timerInterval = setInterval(function(){
         secondsLeft--;
         timeEl.textContent = secondsLeft + "seconds left.";
         
-        
-
         if(secondsLeft <= 0){
             clearInterval(timerInterval);
+            timeEl.textContent = "";
             endGame();
         };
     },1000);
 };
 
 function getQuestion(){
+    if (questionNumber < questions.length){
     var curentQuestion = questions[questionNumber].question;
     quizEl.textContent = curentQuestion;
     var answerA = document.createElement("button");
@@ -173,6 +171,11 @@ function getQuestion(){
     answerD.setAttribute("data-letter", "d");
     answerD.setAttribute("data-type", "question");
     quizEl.appendChild(answerD);
+    } else{
+        clearInterval(timerInterval);
+        timeEl.textContent = "";
+        endGame();
+    }
 }
 
 quizEl.addEventListener("click", function(event) {
@@ -188,18 +191,16 @@ quizEl.addEventListener("click", function(event) {
             wrong++;
             secondsLeft = secondsLeft - 5;
             }
-            if (questionNumber == questionOrder.length){
-            endGame();
-            }
             questionNumber++;
             console.log(correct, wrong)
             getQuestion();
+            
         }else if(type === "submit"){
             event.preventDefault();
-            var name = document.getElementById("name");
+            var name = document.getElementById("name").value;
             var newHighScore = document.createElement("h1");
             newHighScore.textContent = name + " new score of " + score;
-            addNewHighScore(name, score);
+            addNewHighScore(name);
             var table = document.createElement("table");
             var header = document.createElement("tr");
             var place = document.createElement("th");
@@ -212,8 +213,9 @@ quizEl.addEventListener("click", function(event) {
             header.appendChild(tableHName);
             header.appendChild(tableHScore);
             table.appendChild(header);
+            quizEl.appendChild(table);
 
-            for(var i = 0; i < highscores.length;i++){
+            for(var i = 0; i < Object.keys(highscores).length; i++){
                 var tr = document.createElement("tr");
                 var tablePlace = document.createElement("td");
                 tablePlace.textContent = i + 1;
@@ -242,3 +244,22 @@ function endGame(){
     quizEl.appendChild(submit);
 };
 
+function addNewHighScore(name){  
+    var hold = {
+        player: name,
+        score: score
+    };
+    if(highscores !== null){
+        highscores.push(hold);
+        localStorage.setItem("highscores", JSON.stringify(highscores));
+    }else{
+        highscores = [hold];
+        localStorage.setItem("highscores", JSON.stringify(highscores));
+    }
+};
+
+function init(){
+    highscores = JSON.parse(localStorage.getItem("highscores"));
+};
+
+init();
