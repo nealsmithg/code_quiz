@@ -127,8 +127,6 @@ function makeQuestionOrder() {
     }
 };
 
-makeQuestionOrder();
-
 startbutton.onclick = function(){
     mainPage.style.display = "none";
     timer();
@@ -136,6 +134,9 @@ startbutton.onclick = function(){
 };
 
 function timer(){
+    secondsLeft = 45;
+    questionNumber = 0;
+    makeQuestionOrder();
     timerInterval = setInterval(function(){
         secondsLeft--;
         timeEl.textContent = secondsLeft + "seconds left.";
@@ -250,17 +251,34 @@ function endGame(){
 };
 
 function addNewHighScore(name){  
-    var hold = {
+    var hold = [{
         player: name,
         score: score
-    };
+    }];
+    var hold2 = [];
     if(highscores !== null){
-        highscores.push(hold);
+        for (var i=0; i < Object.keys(highscores).length; i++){
+            if (highscores[i].score > hold[0].score && i +1 == Object.keys(highscores).length ){
+                hold2.push(highscores[i]);
+                hold2.push(hold[0]);
+            }else if(highscores[i].score > hold[0].score){
+                hold2.push(highscores[i]);
+            }else{
+                hold2.push(hold[0]);
+                while (i < Object.keys(highscores).length){
+                hold2.push(highscores[i]);
+                i++;
+                }
+                i--;
+            }
+        }
+        highscores = hold2;
         localStorage.setItem("highscores", JSON.stringify(highscores));
     }else{
-        highscores = [hold];
+        highscores = hold;
         localStorage.setItem("highscores", JSON.stringify(highscores));
     }
+    
 };
 
 function init(){
