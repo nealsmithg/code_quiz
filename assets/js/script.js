@@ -136,6 +136,7 @@ startbutton.onclick = function(){
 function timer(){
     secondsLeft = 45;
     questionNumber = 0;
+    score = 0;
     makeQuestionOrder();
     timerInterval = setInterval(function(){
         secondsLeft--;
@@ -216,6 +217,7 @@ quizEl.addEventListener("click", function(event) {
             header.appendChild(tableHScore);
             table.appendChild(header);
             quizEl.appendChild(table);
+            
 
             for(var i = 0; i < Object.keys(highscores).length; i++){
                 var tr = document.createElement("tr");
@@ -257,22 +259,14 @@ function addNewHighScore(name){
     }];
     var hold2 = [];
     if(highscores !== null){
-        for (var i=0; i < Object.keys(highscores).length; i++){
-            if (highscores[i].score > hold[0].score && i +1 == Object.keys(highscores).length ){
-                hold2.push(highscores[i]);
-                hold2.push(hold[0]);
-            }else if(highscores[i].score > hold[0].score){
-                hold2.push(highscores[i]);
-            }else{
-                hold2.push(hold[0]);
-                while (i < Object.keys(highscores).length){
-                hold2.push(highscores[i]);
-                i++;
-                }
-                i--;
-            }
-        }
-        highscores = hold2;
+        
+            highscores.push({
+                player: name,
+                score: score
+            });
+            highscores = highscores.sort(function(a,b){
+                return b.score - a.score
+            });
         localStorage.setItem("highscores", JSON.stringify(highscores));
     }else{
         highscores = hold;

@@ -7,14 +7,6 @@ header{
     justify-content: space-between;
 }
 
-#highscores{
-
-}
-
-#timer{
-
-}
-
 #mainbody,
 #quiz{
     display: flex;
@@ -36,4 +28,10 @@ header{
 #start{
     font-size: 20px;
     font-weight: bold;
+}
+
+#highscores,
+#back{
+    text-decoration: none;
+    color: black;
 }
