@@ -193,6 +193,7 @@ quizEl.addEventListener("click", function(event) {
             }else{
             wrong++;
             secondsLeft = secondsLeft - 5;
+            score = score - 3;
             }
             questionNumber++;
             console.log(correct, wrong)

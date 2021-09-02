@@ -1,7 +1,3 @@
-:root{
-    
-}
-
 header{
     display: flex;
     justify-content: space-between;
@@ -33,5 +29,4 @@ header{
 #highscores,
 #back{
     text-decoration: none;
-    color: black;
 }
