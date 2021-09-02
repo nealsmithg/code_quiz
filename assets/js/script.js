@@ -112,8 +112,8 @@ var correct = 0;
 var questionNumber = 0;
 var score = 0;
 var timerInterval
-
 var questionOrder = [];
+
 function makeQuestionOrder() {
     for(let i = 0; i < questions.length; i++){
         questionOrder.push(i);
@@ -126,6 +126,7 @@ function makeQuestionOrder() {
         questionOrder[j] = temp;
     }
 };
+
 makeQuestionOrder();
 
 startbutton.onclick = function(){
@@ -149,7 +150,7 @@ function timer(){
 
 function getQuestion(){
     if (questionNumber < questions.length){
-    var curentQuestion = questions[questionNumber].question;
+    var curentQuestion = questions[questionOrder[questionNumber]].question;
     quizEl.textContent = curentQuestion;
     var answerA = document.createElement("button");
     answerA.textContent = "A:" + questions[questionNumber].answers["a"];
@@ -227,13 +228,17 @@ quizEl.addEventListener("click", function(event) {
                 tr.appendChild(tableName);
                 tr.appendChild(tableScore);
                 table.appendChild(tr);
-            }
+            };
+            mainPage.style.display = "flex";
+            mainPage.children[0].textContent = "";
+            mainPage.children[1].textContent = "";
+            mainPage.children[2].textContent = "Retry";
         };
     };
 });
 
 function endGame(){
-    quizEl.textContent = "Your score is" + score +"/n Please enter your name to see the High Scores";
+    quizEl.textContent = "Your score is" + score + " Please enter your name to see the High Scores";
     var name = document.createElement("input");
     name.setAttribute("type","text")
     name.setAttribute("id", "name")

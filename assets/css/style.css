@@ -15,7 +15,8 @@ header{
 
 }
 
-#mainbody{
+#mainbody,
+#quiz{
     display: flex;
     flex-direction: column;
     align-items: center;
