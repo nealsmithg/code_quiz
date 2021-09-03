@@ -27,5 +27,5 @@ init();
 clearbtn.onclick = function(){
     highscores = [];
     localStorage.setItem("highscores", JSON.stringify(highscores));
-    init();
+    table.textContent = "";
 };
