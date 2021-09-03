@@ -4,6 +4,9 @@ var table = document.getElementById("highScoreDisplay")
 
 function init(){
     highscores = JSON.parse(localStorage.getItem("highscores"));
+    if (highscores.length == 0){
+        table.textContent = "";
+    }
     for(var i = 0; i < Object.keys(highscores).length; i++){
         var tr = document.createElement("tr");
         var tablePlace = document.createElement("td");

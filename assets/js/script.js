@@ -217,6 +217,7 @@ quizEl.addEventListener("click", function(event) {
             header.appendChild(tableHName);
             header.appendChild(tableHScore);
             table.appendChild(header);
+            quizEl.appendChild(newHighScore);
             quizEl.appendChild(table);
             
 
@@ -242,7 +243,7 @@ quizEl.addEventListener("click", function(event) {
 });
 
 function endGame(){
-    quizEl.textContent = "Your score is" + score + " Please enter your name to see the High Scores";
+    quizEl.textContent = "Your score is " + score + " Please enter your name to see the High Scores";
     var name = document.createElement("input");
     name.setAttribute("type","text")
     name.setAttribute("id", "name")
